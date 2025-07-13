@@ -1,0 +1,75 @@
+{% extends "auth/base.html" %}
+{% load static %}
+
+{% block meta %}
+
+<meta property="og:title" content="{{ title }}" />
+<meta name="description"
+    content="Page de création de compte d'administration d'une boxe" />
+<meta property="og:image" content="{% static 'images/logo_site_vie_reussie.jpeg' %}" />
+<meta property="og:image:secure_url" content="{% static 'images/logo_site_vie_reussie.jpeg' %}" />
+<meta property="og:image:alt" content="Le logo du site" />
+
+{% endblock meta %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'auth/register.css' %}">
+
+<div class="form-div">
+    {% if next %}
+    <form class="form" method="post" action="{% url 'auth:register' mac_address %}?next={{ next }}">
+    {% else %}
+    <form class="form" method="post" action="{% url 'auth:register' mac_address %}">
+    {% endif %}
+        {% csrf_token %}
+        <div class="title">
+            <p>Création de compte </p>
+            <p>Boxe associées : {{ mac_address }}</p>
+        </div>
+        <div class="flex">
+            {{ form.first_name }}
+            {{ form.last_name }}
+        </div>
+        {{ form.phone_number }}
+        {{ form.password }}
+        {{ form.password1 }}
+
+        <div id="password-conditions" style="display: none;">
+            <p id="length" class="invalid">Au moins 8 caractères</p>
+            <p id="uppercase" class="invalid">Au moins une lettre majuscule</p>
+            <p id="lowercase" class="invalid">Au moins une lettre minuscule</p>
+            <p id="number" class="invalid">Au moins un chiffre</p>
+            <p id="special" class="invalid">Au moins un caractère spécial</p>
+        </div>
+
+        <div class="captcha-field">
+            <label for="id_captcha">{{ form.captcha.label }}</label>
+            {{ form.captcha }}
+            {% if form.captcha.errors %}
+            <div class="captcha-error">
+                {{ form.captcha.errors }}
+            </div>
+            {% endif %}
+        </div>
+
+        <button class="submit" disabled>Créer mon compte</button>
+    </form>
+</div>
+<script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
+<script src="{% static 'auth/js/register.js' %}"></script>
+<script>
+    // Fonction appelée lorsque reCAPTCHA est chargé
+    function onRecaptchaLoad() {
+        // Réinitialiser le reCAPTCHA si nécessaire
+        if (typeof grecaptcha !== 'undefined') {
+            grecaptcha.render('g-recaptcha', {
+                'sitekey': '{{ form.captcha.field.widget.attrs.data_sitekey }}',
+                'callback': 'onRecaptchaSuccess',
+                'expired-callback': 'onRecaptchaExpired',
+                'error-callback': 'onRecaptchaError'
+            });
+        }
+    }
+</script>
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% if trial_status.is_trial %}
+<div class="subscription-status trial">
+    <div class="status-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24">
+            <path d="M256 0a256 256 0 1 1 0 512A256 256 0 1 1 256 0zM232 120V256c0 8 4 15.5 10.7 20l96 64c11 7.4 25.9 4.4 33.3-6.7s4.4-25.9-6.7-33.3L280 243.2V120c0-13.3-10.7-24-24-24s-24 10.7-24 24z" fill="currentColor"/>
+        </svg>
+    </div>
+    <div class="status-content">
+        <h3>Période d'essai</h3>
+        <p>Il vous reste <strong>{{ trial_status.days_remaining }} jour{{ trial_status.days_remaining|pluralize }}</strong> dans votre période d'essai gratuite.</p>
+        <p>Après cette période, vous devrez souscrire à un abonnement pour continuer à publier et diffuser vos catalogues.</p>
+
+        {% if trial_status.catalogs_count >= trial_status.max_catalogs %}
+        <div class="status-warning">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="16" height="16" style="margin-right: 5px;">
+                <path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" fill="currentColor"/>
+            </svg>
+            <span>Vous avez atteint la limite de {{ trial_status.max_catalogs }} catalogue{{ trial_status.max_catalogs|pluralize }} en période d'essai.</span>
+        </div>
+        {% else %}
+        <p>En période d'essai, vous pouvez créer {{ trial_status.max_catalogs }} catalogue{{ trial_status.max_catalogs|pluralize }}.
+           Vous avez déjà créé {{ trial_status.catalogs_count }} catalogue{{ trial_status.catalogs_count|pluralize }}.</p>
+        {% endif %}
+
+        <a href="{% url 'pricing:company_plans' %}" class="subscription-btn">Voir les abonnements</a>
+    </div>
+</div>
+{% elif not trial_status.has_subscription %}
+<div class="subscription-status expired">
+    <div class="status-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24">
+            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z" fill="currentColor"/>
+        </svg>
+    </div>
+    <div class="status-content">
+        <h3>Période d'essai expirée</h3>
+        <p>Votre période d'essai gratuite est expirée. Vous ne pouvez plus publier ni modifier vos catalogues.</p>
+        <p>Vos catalogues ne sont plus visibles pour les clients.</p>
+        <a href="{% url 'pricing:company_plans' %}" class="subscription-btn">Souscrire maintenant</a>
+    </div>
+</div>
+<!-- {% else %}
+<div class="subscription-status active">
+    <div class="status-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24">
+            <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z" fill="currentColor"/>
+        </svg>
+    </div>
+    <div class="status-content">
+        <h3>Abonnement actif</h3>
+        <p>Vous avez un abonnement actif. Vous pouvez publier et modifier vos catalogues.</p>
+        <p>Vos catalogues sont visibles pour les clients.</p>
+        <a href="{% url 'pricing:subscription_details' %}" class="subscription-btn">Gérer mon abonnement</a>
+    </div>
+</div> -->
+{% endif %}

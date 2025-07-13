@@ -1,0 +1,108 @@
+
+:root {
+    --main-color: rgb(202, 154, 58);
+    --main-color: #481a00;
+    --main-color: rgb(0, 102, 83);
+    --main-font-family: Verdana, Geneva, Tahoma, sans-serif;
+    --footer-color: rgb(1, 27, 22);
+
+
+    --title-font-family: Montserrat, sans-serif;
+    --subtitle-font-family: Montserrat, sans-serif;
+    --content-font-family: Montserrat, sans-serif;
+    
+
+    --color1: rgb(3, 6, 55);
+    --color2: rgb(60, 7, 83);
+    --color3: rgb(114, 4, 85);
+    --color4: rgb(145, 10, 103);
+    
+
+    --color1: #481a00;
+    --color2: #bb5302;
+    --color3: #ffc51b;
+    --color4: #ffea85;
+
+    --second-color1: #04344d;
+    --second-color2: #00638d;
+    --second-color3: #00bfff;
+    --second-color4: #75deff;
+
+}
+
+
+main {
+    margin: auto;
+    background-color: var(--second-color1);
+    padding: 20px;
+
+}
+
+.top-div {
+    background-color: white;
+    box-sizing: border-box;
+    padding: 5px 20px;
+    padding-bottom: 30px;
+
+}
+
+.top-head {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 20px;
+    text-align: end;
+}
+
+.site-logo {
+    height: 100px;
+    width: 100px;
+}
+
+.body-section {
+    padding: 0px 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.confirmation-btn {
+    border: 2px solid #04344d;
+    border-radius: 40px;
+    padding: 10px;
+    width: 50%;
+    text-decoration: none;
+    color: #04344d;
+    transition: 0.3s all ease;
+
+}
+
+.confirmation-btn:hover {
+    background-color: #04344d;
+    color: white;
+    transition: 0.3s all ease;
+}
+
+
+.social-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+}
+
+.social-line svg {
+    background-color: #00638d;
+    border-radius: 50%;
+    padding: 10px;
+    fill: white;
+    cursor: pointer;
+    
+}
+
+.social-line svg:hover {
+    opacity: 0.8;
+}

@@ -1,0 +1,270 @@
+{% extends "auth/base.html" %}
+{% load static %}
+
+{% block meta %}
+<meta property="og:title" content="{{ title }}" />
+<meta name="description" content="Page de création de compte entreprise" />
+<meta property="og:image" content="{% static 'images/logo_site_vie_reussie.jpeg' %}" />
+<meta property="og:image:secure_url" content="{% static 'images/logo_site_vie_reussie.jpeg' %}" />
+<meta property="og:image:alt" content="Le logo du site" />
+{% endblock meta %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'auth/register.css' %}">
+<link rel="stylesheet" href="{% static 'auth/address-autocomplete.css' %}">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+<div class="form-div">
+    {% if next %}
+    <form class="form" method="post" action="{% url 'auth:company_register' %}?next={{ next }}">
+    {% else %}
+    <form class="form" method="post" action="{% url 'auth:company_register' %}">
+    {% endif %}
+        {% csrf_token %}
+        <div class="title">
+            <p>Création de compte entreprise</p>
+            <p>Informations personnelles et entreprise</p>
+        </div>
+
+        <!-- Section 1: Informations personnelles -->
+        <div class="section-title">Informations personnelles</div>
+        <div class="flex">
+            {{ form.first_name }}
+            {{ form.last_name }}
+        </div>
+        {{ form.email }}
+        {{ form.phone_number }}
+        {{ form.password }}
+        {{ form.password1 }}
+
+        <div id="password-conditions" style="display: none;">
+            <p id="length" class="invalid">Au moins 8 caractères</p>
+            <p id="uppercase" class="invalid">Au moins une lettre majuscule</p>
+            <p id="lowercase" class="invalid">Au moins une lettre minuscule</p>
+            <p id="number" class="invalid">Au moins un chiffre</p>
+            <p id="special" class="invalid">Au moins un caractère spécial</p>
+        </div>
+
+        <!-- Section 2: Informations de l'entreprise -->
+        <div class="section-title">Informations de l'entreprise</div>
+        {{ form.company_name }}
+        {{ form.company_category }}
+        {{ form.company_siret }}
+
+        <!-- Recherche d'adresse -->
+        <div class="address-search-container">
+            <label for="{{ form.address_search.id_for_label }}">{{ form.address_search.label }}</label>
+            {{ form.address_search }}
+            <div id="autocomplete-results" class="autocomplete-results"></div>
+        </div>
+
+        <!-- Adresse -->
+        {{ form.company_address }}
+        <div class="flex">
+            {{ form.company_postal_code }}
+            {{ form.company_city }}
+        </div>
+
+        <!-- Carte pour sélectionner l'emplacement -->
+        <div class="location-section">
+            <label>Emplacement de l'entreprise</label>
+            <div id="map-container" class="map-container"></div>
+            <p class="map-help">Cliquez sur la carte pour définir l'emplacement précis de votre entreprise ou utilisez la recherche d'adresse ci-dessus.</p>
+
+            <!-- Afficher les erreurs de validation pour les coordonnées -->
+            {% if form.company_latitude.errors or form.company_longitude.errors %}
+            <div class="location-error">
+                Veuillez définir l'emplacement de votre entreprise sur la carte ou en utilisant la recherche d'adresse.
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Champs cachés pour les coordonnées GPS -->
+        {{ form.company_latitude }}
+        {{ form.company_longitude }}
+
+        <!-- Heures d'ouverture et de fermeture -->
+        <div class="flex">
+            <div class="time-field">
+                <label for="{{ form.company_opening_hour.id_for_label }}">Heure d'ouverture</label>
+                {{ form.company_opening_hour }}
+            </div>
+            <div class="time-field">
+                <label for="{{ form.company_closing_hour.id_for_label }}">Heure de fermeture</label>
+                {{ form.company_closing_hour }}
+            </div>
+        </div>
+
+        <!-- Captcha -->
+        <div class="captcha-field">
+            <label for="id_captcha">{{ form.captcha.label }}</label>
+            {{ form.captcha }}
+            {% if form.captcha.errors %}
+            <div class="captcha-error">
+                {{ form.captcha.errors }}
+            </div>
+            {% endif %}
+        </div>
+
+        <button class="submit" disabled>Créer mon compte et mon entreprise</button>
+
+        <!-- Message de statut du formulaire -->
+        <div id="form-status" style="margin-top: 10px; font-size: 12px; color: #666;">
+            Veuillez remplir tous les champs et valider le captcha pour continuer.
+        </div>
+
+        <div class="signin">
+            Déjà un compte ? <a href="{% url 'auth:login' %}">Se connecter</a>
+        </div>
+    </form>
+</div>
+<!-- Charger d'abord le script principal -->
+<script src="{% static 'auth/js/register.js' %}"></script>
+
+<!-- Définir les fonctions de callback pour reCAPTCHA -->
+<script>
+    // Variable pour suivre si le reCAPTCHA a déjà été rendu
+    var recaptchaRendered = false;
+
+    // Fonction appelée lorsque reCAPTCHA est chargé
+    function onRecaptchaLoad() {
+        console.log("reCAPTCHA API chargée");
+
+        // Éviter de rendre le reCAPTCHA plusieurs fois
+        if (recaptchaRendered) {
+            console.log("reCAPTCHA déjà rendu, ignorer");
+            return;
+        }
+
+        // Réinitialiser le reCAPTCHA si nécessaire
+        if (typeof grecaptcha !== 'undefined') {
+            try {
+                // Trouver l'élément reCAPTCHA
+                const recaptchaElement = document.querySelector('.g-recaptcha');
+                console.log(recaptchaElement);
+
+                if (recaptchaElement) {
+                    console.log("Élément reCAPTCHA trouvé, rendu en cours...");
+
+                    // Vérifier si l'élément a déjà un widget reCAPTCHA
+                    if (!recaptchaElement.querySelector('iframe') && !recaptchaElement.hasAttribute('data-widget-id')) {
+                        // Laisser le widget se rendre lui-même avec ses propres callbacks
+                        // Notre code JavaScript interceptera ces callbacks
+                        console.log("Laissant le widget reCAPTCHA se rendre automatiquement");
+                        recaptchaRendered = true;
+                    } else {
+                        console.log("reCAPTCHA déjà rendu dans cet élément, ignorer");
+                    }
+                } else {
+                    console.error("Élément reCAPTCHA non trouvé dans le DOM");
+                }
+            } catch (e) {
+                console.error("Erreur lors du rendu du reCAPTCHA:", e);
+            }
+        } else {
+            console.error("L'API grecaptcha n'est pas définie");
+        }
+    }
+</script>
+
+<!-- Charger l'API reCAPTCHA -->
+<script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoad&render=explicit" async defer></script>
+
+<!-- Charger Leaflet pour la carte -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+
+<!-- Script pour l'autocomplétion d'adresse et la carte -->
+<script src="{% static 'auth/js/address-autocomplete.js' %}"></script>
+
+<!-- Script pour initialiser la carte -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Vérifier si la carte existe déjà
+        if (window.companyMap) {
+            console.log("La carte existe déjà, pas besoin de l'initialiser à nouveau");
+            return;
+        }
+
+        // Vérifier si le conteneur de carte existe
+        const mapContainer = document.getElementById('map-container');
+        if (!mapContainer) {
+            console.log("Le conteneur de carte n'existe pas");
+            return;
+        }
+
+        try {
+            // Initialiser la carte
+            window.companyMap = L.map('map-container').setView([46.603354, 1.888334], 5); // Centre sur la France
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(window.companyMap);
+
+            window.companyMarker = null;
+
+            // Fonction pour mettre à jour les coordonnées
+            function updateCoordinates(lat, lng) {
+                const latField = document.getElementById('id_company_latitude');
+                const lngField = document.getElementById('id_company_longitude');
+
+                if (latField && lngField) {
+                    latField.value = lat;
+                    lngField.value = lng;
+
+                    // Mettre à jour le statut du formulaire si la fonction existe
+                    if (typeof updateSubmitButton === 'function') {
+                        const passwordInput = document.getElementById('id_password');
+                        if (passwordInput) {
+                            updateSubmitButton(passwordInput.value);
+                        }
+                    }
+                }
+            }
+
+            // Ajouter un marqueur lorsqu'on clique sur la carte
+            window.companyMap.on('click', function(e) {
+                if (window.companyMarker) {
+                    window.companyMap.removeLayer(window.companyMarker);
+                }
+
+                window.companyMarker = L.marker(e.latlng).addTo(window.companyMap);
+                updateCoordinates(e.latlng.lat, e.latlng.lng);
+            });
+
+            // Fonction pour centrer la carte sur une adresse
+            window.centerMapOnAddress = function(lat, lng, address) {
+                if (window.companyMarker) {
+                    window.companyMap.removeLayer(window.companyMarker);
+                }
+
+                window.companyMap.setView([lat, lng], 15);
+                window.companyMarker = L.marker([lat, lng]).addTo(window.companyMap);
+                updateCoordinates(lat, lng);
+            };
+
+            // Vérifier si des coordonnées sont déjà définies
+            var latField = document.getElementById('id_company_latitude');
+            var lngField = document.getElementById('id_company_longitude');
+
+            if (latField && lngField && latField.value && lngField.value) {
+                var lat = parseFloat(latField.value);
+                var lng = parseFloat(lngField.value);
+
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    window.companyMap.setView([lat, lng], 15);
+                    window.companyMarker = L.marker([lat, lng]).addTo(window.companyMap);
+                }
+            }
+
+            console.log("Carte initialisée avec succès");
+        } catch (error) {
+            console.error("Erreur lors de l'initialisation de la carte:", error);
+        }
+    });
+</script>
+
+{% endblock %}

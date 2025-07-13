@@ -1,0 +1,144 @@
+{% extends "account/base.html" %}
+{% load static %}
+
+{% block title %} <title>Catalogues disponibles</title>{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>Catalogues disponibles</h1>
+        </div>
+        <div class="col-md-4">
+            <form method="get" class="form-inline">
+                <div class="form-group">
+                    <label for="company" class="mr-2">Filtrer par entreprise:</label>
+                    <select name="company" id="company" class="form-control" onchange="this.form.submit()">
+                        <option value="">Toutes les entreprises</option>
+                        {% for company in companies %}
+                            <option value="{{ company.id }}" {% if selected_company == company.id|stringformat:"i" %}selected{% endif %}>
+                                {{ company.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if page_obj %}
+        <div class="row">
+            {% for catalog in page_obj %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">{{ catalog.title }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">
+                                <strong>Entreprise:</strong> {{ catalog.company.name }}<br>
+                                <small class="text-muted">Publié le {{ catalog.created_at|date:"d/m/Y" }}</small>
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'company:catalog_download' catalog.id %}" class="btn btn-sm btn-success">
+                                    <i class="fas fa-download"></i> Télécharger
+                                </a>
+                                <a href="#" class="btn btn-sm btn-info" data-toggle="modal" data-target="#previewModal{{ catalog.id }}">
+                                    <i class="fas fa-eye"></i> Aperçu
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Modal pour l'aperçu -->
+                <div class="modal fade" id="previewModal{{ catalog.id }}" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel{{ catalog.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="previewModalLabel{{ catalog.id }}">{{ catalog.title }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="embed-responsive embed-responsive-16by9">
+                                    <iframe class="embed-responsive-item" src="{{ catalog.file.url }}" style="width: 100%; height: 500px;"></iframe>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                                <a href="{% url 'company:catalog_download' catalog.id %}" class="btn btn-primary">Télécharger</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if page_obj.has_other_pages %}
+        <nav aria-label="Pagination des catalogues">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1{% if selected_company %}&company={{ selected_company }}{% endif %}" aria-label="Première">
+                        <span aria-hidden="true">&laquo;&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if selected_company %}&company={{ selected_company }}{% endif %}" aria-label="Précédente">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&laquo;&laquo;</span>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link">&laquo;</span>
+                </li>
+                {% endif %}
+
+                {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                    <li class="page-item active">
+                        <span class="page-link">{{ i }}</span>
+                    </li>
+                    {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ i }}{% if selected_company %}&company={{ selected_company }}{% endif %}">{{ i }}</a>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if selected_company %}&company={{ selected_company }}{% endif %}" aria-label="Suivante">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if selected_company %}&company={{ selected_company }}{% endif %}" aria-label="Dernière">
+                        <span aria-hidden="true">&raquo;&raquo;</span>
+                    </a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">&raquo;</span>
+                </li>
+                <li class="page-item disabled">
+                    <span class="page-link">&raquo;&raquo;</span>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-info">
+            <p>Aucun catalogue n'est disponible pour le moment.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

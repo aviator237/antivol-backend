@@ -1,0 +1,66 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'pricing/css/upgrade_plan.css' %}">
+
+<a href="{% url 'pricing:index' %}" class="back-button">
+    <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1024 1024">
+        <path
+            d="M874.690416 495.52477c0 11.2973-9.168824 20.466124-20.466124 20.466124l-604.773963 0 188.083679 188.083679c7.992021 7.992021 7.992021 20.947078 0 28.939099-4.001127 3.990894-9.240455 5.996574-14.46955 5.996574-5.239328 0-10.478655-1.995447-14.479783-5.996574l-223.00912-223.00912c-3.837398-3.837398-5.996574-9.046027-5.996574-14.46955 0-5.433756 2.159176-10.632151 5.996574-14.46955l223.019353-223.029586c7.992021-7.992021 20.957311-7.992021 28.949332 0 7.992021 8.002254 7.992021 20.957311 0 28.949332l-188.073446 188.073446 604.753497 0C865.521592 475.058646 874.690416 484.217237 874.690416 495.52477z">
+        </path>
+    </svg>
+    <span>Retour</span>
+</a>
+<hr class="head-hr">
+<h1>Plans disponibles</h1>
+
+<section class="list_plan_section">
+    {% for product in products %}
+    <div class="plan_card">
+        <div class="plan_card_head">
+            <h1>{{ product.name }}</h1>
+            <p>
+                <span><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>Stockage</span>{{ product.storage }} Go
+            </p>
+            <hr>
+
+            {% for plan in product.get_plans %}
+            <p><span><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>{{ plan.amount }} €</span>
+                /{{ plan.get_interval_display }}</p>
+            <hr>
+
+            {% endfor %}
+        </div>
+
+        {% if user_product.id == product.id %}
+        <a href="{% url 'pricing:downgrade' free_product.id %}">Downgrade<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/>
+          </svg>
+          </a>
+        {% else %}
+        <a href="{% url 'pricing:subscribe' product.id %}">Souscrire<svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5m14 0-4 4m4-4-4-4"/>
+          </svg>
+          </a>
+        {% endif %}
+    </div>
+
+    {% endfor %}
+</section>
+<hr class="head-hr">
+
+{% if not user_product.is_free %}
+<a href="{% url 'pricing:downgrade' free_product.id %}">Revenir au plan gratuit ?</a>
+{% endif %}
+
+
+{% endblock content %}

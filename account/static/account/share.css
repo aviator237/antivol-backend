@@ -1,0 +1,273 @@
+
+
+.album_name {
+    margin: 0px;
+    margin-top: 10px;
+    color: var(--second-color2);
+    font-weight: bold;
+}
+
+#contactList > span {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+
+#contactList button {
+    background-color: red;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+
+}
+
+.input-container {
+    position: relative;
+    display: flex;
+    width: 100%;
+    min-width: 200px;
+    max-width: 350px;
+    background-color: #fff;
+    border-radius: 3px;
+    box-shadow: 20px 20px 30px rgba(0, 0, 0, .05);
+  }
+  
+  .input-container input {
+    height: 100%;
+    width: 100%;
+    border-radius: 3px;
+    border: none;
+    background-color: transparent;
+    padding: 0.625rem 70px 0.625rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 400;
+    color: rgb(69 90 100);
+    outline: none;
+    transition: all .15s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    
+  }
+  
+  .input-container input:focus {
+    border: 1px solid var(--second-color3);
+  }
+  
+  .invite-btn {
+    position: absolute;
+    width: 85px;
+    right: 4px;
+    top: 4px;
+    bottom: 4px;
+    z-index: 10;
+    border-radius: 3px;
+    background-color: var(--second-color2);
+    color: #fff;
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border: none;
+    transition: .6s ease;
+    cursor: pointer;
+  }
+  
+  .invite-btn:hover {
+    background-color: var(--second-color1);
+  }
+  
+  .input-container input:placeholder-shown ~ .invite-btn {
+    pointer-events: none;
+    background-color: gray;
+    opacity: 0.5;
+  }
+
+
+.upload_images_button {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    background-color: transparent;
+    border: none;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: 5px 10px;
+    cursor: pointer;
+    padding-right: 1rem;
+    font-weight: 600;
+    color: #000;
+    background: white;
+    white-space: nowrap;
+    border-radius: 3px;
+    border: 1px solid #fff3;
+    transition: all 0.2s linear;
+    
+    }
+    
+    .upload_images_button:hover{
+        transform: translateY(-2px);
+    
+    }
+    
+
+  #submitBtn {
+    margin-top: 20px;
+    background-color: var(--second-color2);
+    color: white;
+    padding: 10px 30px;
+    font-size: 16px;
+}
+
+#submitBtn:hover {
+  background-color: var(--second-color1);
+
+}
+
+.select_my_contact {
+  background-color: var(--second-color2);
+  border-radius: 3px;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  /* margin-top: 20px; */
+  transition: all 0.2s linear;
+
+}
+
+.select_my_contact:hover {
+  color: white;
+  background-color: var(--second-color1);
+  text-decoration: none;
+}
+
+h3 {
+  margin: 5px 0px;
+  font-weight: bold;
+}
+
+p {
+  margin: 0px;
+  margin-top: 10px;
+}
+
+thead {
+  background-color: var(--second-color2);
+  color: white !important;
+
+}
+
+table {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  background-color: white;
+}
+
+
+
+
+
+
+
+
+/* From Uiverse.io by risabbir */ 
+.checkbox-container {
+  display: flex;
+  /* justify-content: center;
+  align-items: center; */
+  height: 100%;
+  margin: 0;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.checkbox {
+  display: none;
+}
+
+.checkbox-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkbox-flip {
+  width: 20px;
+  height: 20px;
+  perspective: 1000px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  transition: transform 0.4s ease;
+}
+
+.checkbox-front,
+.checkbox-back {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  backface-visibility: hidden;
+  transition: transform 0.3s ease;
+}
+
+.checkbox-front {
+  background: linear-gradient(135deg, #ff6347, #f76c6c);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: rotateY(0deg);
+}
+
+.checkbox-back {
+  background: linear-gradient(135deg, #36b54a, #00c1d4);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: rotateY(180deg);
+}
+
+.checkbox-wrapper:hover .checkbox-flip {
+  transform: scale(1.1);
+  transition: transform 0.4s ease-out;
+}
+
+.checkbox:checked + .checkbox-label .checkbox-front {
+  transform: rotateY(180deg);
+}
+
+.checkbox:checked + .checkbox-label .checkbox-back {
+  transform: rotateY(0deg);
+}
+
+.checkbox:focus + .checkbox-label .checkbox-flip {
+  box-shadow:
+    0 0 15px rgba(54, 181, 73, 0.7),
+    0 0 20px rgba(0, 193, 212, 0.4);
+  transition: box-shadow 0.3s ease;
+}
+
+.icon-path {
+  stroke: white;
+  stroke-width: 2;
+  fill: transparent;
+}
+
+
+
+@media screen and (max-width: 901px) {
+
+}

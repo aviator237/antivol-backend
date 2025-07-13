@@ -1,0 +1,219 @@
+{% extends "account/base.html" %}
+{% load static %}
+
+{% block title %}<title>Documentation API</title>{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Documentation API</h1>
+    <p class="lead">Cette page documente les endpoints API disponibles pour interagir avec les données des entreprises et des catalogues.</p>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Catégories</h2>
+        </div>
+        <div class="card-body">
+            <h3>Liste des catégories</h3>
+            <p><code>GET /company/api/categories/</code></p>
+            <p>Retourne la liste de toutes les catégories d'entreprises.</p>
+            <h4>Exemple de réponse</h4>
+            <pre><code>[
+  {
+    "id": 1,
+    "name": "Restauration",
+    "description": "Restaurants et cafés"
+  },
+  {
+    "id": 2,
+    "name": "Informatique",
+    "description": "Services informatiques"
+  }
+]</code></pre>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Entreprises</h2>
+        </div>
+        <div class="card-body">
+            <h3>Liste des entreprises</h3>
+            <p><code>GET /company/api/companies/</code></p>
+            <p>Retourne la liste de toutes les entreprises avec des informations de base.</p>
+
+            <h3>Liste des entreprises par catégorie</h3>
+            <p><code>GET /company/api/companies/category/{category_id}/</code></p>
+            <p>Retourne la liste des entreprises appartenant à une catégorie spécifique.</p>
+
+            <h3>Détails d'une entreprise</h3>
+            <p><code>GET /company/api/companies/{company_id}/</code></p>
+            <p>Retourne les détails complets d'une entreprise spécifique.</p>
+
+            <h3>Recherche d'entreprises par localisation</h3>
+            <p><code>GET /company/api/companies/search/location/?lat={latitude}&lng={longitude}&radius={radius}</code></p>
+            <p>Recherche les entreprises dans un rayon donné (en km) autour d'un point géographique.</p>
+            <p>Paramètres:</p>
+            <ul>
+                <li><code>lat</code>: Latitude (obligatoire)</li>
+                <li><code>lng</code>: Longitude (obligatoire)</li>
+                <li><code>radius</code>: Rayon de recherche en km (optionnel, défaut: 10)</li>
+            </ul>
+
+            <h3>Entreprises avec catalogues dans une zone</h3>
+            <p><code>GET /company/api/companies/in-zone/?city={city}</code></p>
+            <p><code>GET /company/api/companies/in-zone/?lat={latitude}&lng={longitude}&radius={radius}</code></p>
+            <p>Retourne la liste des entreprises qui ont publié au moins un catalogue dans la zone spécifiée.</p>
+            <p>Paramètres (au choix):</p>
+            <ul>
+                <li><code>city</code>: Nom de la ville</li>
+                <li>OU</li>
+                <li><code>lat</code>: Latitude</li>
+                <li><code>lng</code>: Longitude</li>
+                <li><code>radius</code>: Rayon de recherche en km (optionnel, défaut: 10)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Catalogues</h2>
+        </div>
+        <div class="card-body">
+            <h3>Liste des catalogues d'une entreprise</h3>
+            <p><code>GET /company/api/catalogs/company/{company_id}/</code></p>
+            <p>Retourne la liste des catalogues d'une entreprise spécifique.</p>
+
+            <h3>Liste des catalogues d'une entreprise dans une zone</h3>
+            <p><code>GET /company/api/companies/{company_id}/catalogs/in-zone/?city={city}</code></p>
+            <p><code>GET /company/api/companies/{company_id}/catalogs/in-zone/?lat={latitude}&lng={longitude}&radius={radius}</code></p>
+            <p>Retourne la liste des catalogues d'une entreprise spécifique qui sont diffusés dans la zone spécifiée.</p>
+            <p>Paramètres (au choix):</p>
+            <ul>
+                <li><code>city</code>: Nom de la ville</li>
+                <li>OU</li>
+                <li><code>lat</code>: Latitude</li>
+                <li><code>lng</code>: Longitude</li>
+                <li><code>radius</code>: Rayon de recherche en km (optionnel, défaut: 10)</li>
+            </ul>
+
+            <h3>Liste des catalogues d'une zone de diffusion</h3>
+            <p><code>GET /company/api/catalogs/zone/{zone_id}/</code></p>
+            <p>Retourne la liste des catalogues associés à une zone de diffusion spécifique.</p>
+
+            <h3>Détails d'un catalogue</h3>
+            <p><code>GET /company/api/catalogs/{catalog_id}/</code></p>
+            <p>Retourne les détails complets d'un catalogue spécifique, y compris ses zones de diffusion.</p>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Zones de diffusion</h2>
+        </div>
+        <div class="card-body">
+            <h3>Liste des zones de diffusion</h3>
+            <p><code>GET /company/api/zones/</code></p>
+            <p>Retourne la liste de toutes les zones de diffusion.</p>
+
+            <h3>Détails d'une zone de diffusion</h3>
+            <p><code>GET /company/api/zones/{zone_id}/</code></p>
+            <p>Retourne les détails complets d'une zone de diffusion spécifique.</p>
+
+            <h3>Liste des zones de diffusion d'une entreprise</h3>
+            <p><code>GET /company/api/zones/company/{company_id}/</code></p>
+            <p>Retourne la liste des zones de diffusion d'une entreprise spécifique.</p>
+
+            <h3>Recherche de zones de diffusion par localisation</h3>
+            <p><code>GET /company/api/zones/search/location/?lat={latitude}&lng={longitude}&radius={radius}</code></p>
+            <p>Recherche les zones de diffusion dans un rayon donné (en km) autour d'un point géographique.</p>
+            <p>Paramètres:</p>
+            <ul>
+                <li><code>lat</code>: Latitude (obligatoire)</li>
+                <li><code>lng</code>: Longitude (obligatoire)</li>
+                <li><code>radius</code>: Rayon de recherche en km (optionnel, défaut: 10)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Services publics (Mairies et Pharmacies de garde)</h2>
+        </div>
+        <div class="card-body">
+            <h3>Liste des services publics</h3>
+            <p><code>GET /company/api/public-services/</code></p>
+            <p>Retourne la liste de tous les services publics (mairies et pharmacies de garde).</p>
+            <p>Paramètres optionnels:</p>
+            <ul>
+                <li><code>type</code>: Filtrer par type de service ('city_hall' pour les mairies, 'pharmacy' pour les pharmacies)</li>
+                <li><code>city</code>: Filtrer par ville</li>
+            </ul>
+
+            <h3>Détails d'un service public</h3>
+            <p><code>GET /company/api/public-services/{service_id}/</code></p>
+            <p>Retourne les détails complets d'un service public spécifique.</p>
+
+            <h3>Recherche de services publics par localisation</h3>
+            <p><code>GET /company/api/public-services/search/location/?lat={latitude}&lng={longitude}&radius={radius}&type={type}</code></p>
+            <p>Recherche les services publics dans un rayon donné (en km) autour d'un point géographique.</p>
+            <p>Paramètres:</p>
+            <ul>
+                <li><code>lat</code>: Latitude (obligatoire)</li>
+                <li><code>lng</code>: Longitude (obligatoire)</li>
+                <li><code>radius</code>: Rayon de recherche en km (optionnel, défaut: 10)</li>
+                <li><code>type</code>: Filtrer par type de service ('city_hall' pour les mairies, 'pharmacy' pour les pharmacies) (optionnel)</li>
+            </ul>
+            <h4>Exemple de réponse</h4>
+            <pre><code>[
+  {
+    "id": 1,
+    "name": "Mairie de Paris",
+    "service_type": "city_hall",
+    "service_type_display": "Mairie",
+    "address": "Place de l'Hôtel de Ville",
+    "postal_code": "75004",
+    "city": "Paris",
+    "full_address": "Place de l'Hôtel de Ville 75004 Paris",
+    "latitude": 48.856614,
+    "longitude": 2.352222,
+    "google_maps_url": "https://www.google.com/maps?q=48.856614,2.352222",
+    "phone": "01 42 76 40 40",
+    "email": "contact@paris.fr",
+    "website": "https://www.paris.fr",
+    "opening_hour": "09:00:00",
+    "closing_hour": "17:00:00",
+    "notes": "Fermé le dimanche"
+  },
+  {
+    "id": 2,
+    "name": "Pharmacie de Garde Centrale",
+    "service_type": "pharmacy",
+    "service_type_display": "Pharmacie de garde",
+    "address": "25 rue de la République",
+    "postal_code": "75001",
+    "city": "Paris",
+    "full_address": "25 rue de la République 75001 Paris",
+    "latitude": 48.862725,
+    "longitude": 2.350564,
+    "google_maps_url": "https://www.google.com/maps?q=48.862725,2.350564",
+    "phone": "01 45 62 02 41",
+    "email": null,
+    "website": null,
+    "opening_hour": "00:00:00",
+    "closing_hour": "23:59:00",
+    "notes": "Ouverte 24h/24 les jours de garde"
+  }
+]</code></pre>
+        </div>
+    </div>
+
+    <div class="alert alert-info">
+        <h3>Notes</h3>
+        <ul>
+            <li>Tous les endpoints retournent des données au format JSON.</li>
+            <li>Les endpoints sont accessibles sans authentification pour permettre l'accès depuis le client.</li>
+            <li>Pour télécharger un fichier de catalogue, utilisez l'URL retournée dans le champ <code>file</code> du catalogue.</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

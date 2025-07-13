@@ -1,0 +1,238 @@
+.album_name {
+    margin: 0px;
+    margin-top: 10px;
+    color: var(--second-color2);
+    font-weight: bold;
+}
+
+.company-info-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.company-info-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.company-info-header h3 {
+    color: var(--second-color2);
+    margin: 0;
+    font-weight: bold;
+}
+
+.edit-btn {
+    background-color: var(--second-color2);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    transition: all 0.2s ease-in;
+}
+
+.edit-btn:hover {
+    background-color: var(--second-color1);
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: white;
+}
+
+.info-section {
+    margin-bottom: 20px;
+}
+
+.info-section h4 {
+    color: var(--second-color1);
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.info-item {
+    margin-bottom: 10px;
+}
+
+.info-label {
+    font-weight: bold;
+    color: #6c757d;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.info-value {
+    font-size: 16px;
+}
+
+/* Styles pour la section de localisation */
+.location-info {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.location-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.location-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.directions-btn, .osm-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s ease-in;
+}
+
+.directions-btn {
+    background-color: #4285F4;
+    color: white;
+}
+
+.directions-btn:hover {
+    background-color: #3367D6;
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: white;
+}
+
+.osm-btn {
+    background-color: #7EBC6F;
+    color: white;
+}
+
+.osm-btn:hover {
+    background-color: #68A55F;
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: white;
+}
+
+.map-container {
+    height: 300px;
+    width: 100%;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.map-error {
+    padding: 20px;
+    background-color: #f8d7da;
+    color: #721c24;
+    text-align: center;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.location-missing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    text-align: center;
+    color: #6c757d;
+}
+
+.location-missing svg {
+    margin-bottom: 10px;
+    opacity: 0.5;
+}
+
+.add-location-btn {
+    margin-top: 10px;
+    background-color: var(--second-color3);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    text-decoration: none;
+    transition: all 0.2s ease-in;
+}
+
+.add-location-btn:hover {
+    background-color: var(--second-color2);
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: white;
+}
+
+.hours-container {
+    display: flex;
+    gap: 20px;
+}
+
+.hours-item {
+    flex: 1;
+}
+
+@media screen and (max-width: 901px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .company-info-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .hours-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .location-info {
+        grid-template-columns: 1fr;
+    }
+
+    .map-container {
+        height: 250px;
+        order: -1;
+    }
+
+    .location-details {
+        margin-top: 15px;
+    }
+
+    .location-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .directions-btn, .osm-btn {
+        flex: 1;
+        min-width: 150px;
+        justify-content: center;
+    }
+}

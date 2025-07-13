@@ -1,0 +1,100 @@
+
+:root {
+    --main-color: rgb(202, 154, 58);
+    --main-color: #481a00;
+    --main-color: rgb(0, 102, 83);
+    --main-font-family: Verdana, Geneva, Tahoma, sans-serif;
+    --footer-color: rgb(1, 27, 22);
+
+
+    --title-font-family: Montserrat, sans-serif;
+    --subtitle-font-family: Montserrat, sans-serif;
+    --content-font-family: Montserrat, sans-serif;
+
+
+    --color1: rgb(3, 6, 55);
+    --color2: rgb(60, 7, 83);
+    --color3: rgb(114, 4, 85);
+    --color4: rgb(145, 10, 103);
+
+
+    --color1: #481a00;
+    --color2: #bb5302;
+    --color3: #ffc51b;
+    --color4: #ffea85;
+
+    --second-color1: #04344d;
+    --second-color1-rgb: 4, 52, 77;
+    --second-color2: #00638d;
+    --second-color2-rgb: 0, 99, 141;
+    --second-color3: #00bfff;
+    --second-color3-rgb: 0, 191, 255;
+    --second-color4: #75deff;
+    --second-color4-rgb: 117, 222, 255;
+
+}
+
+
+
+body {
+    background-color: rgba(0, 0, 0, 0.1);
+    min-height: 100vh;
+}
+
+
+.back-button {
+    display: flex;
+    height: 2.5em;
+    width: 100px;
+    align-items: center;
+    justify-content: center;
+    background-color: #eeeeee4b;
+    border-radius: 3px;
+    letter-spacing: 1px;
+    transition: all 0.2s linear;
+    cursor: pointer;
+    border: none;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    color: black;
+   }
+
+   .back-button > svg {
+    margin-right: 5px;
+    margin-left: 5px;
+    font-size: 20px;
+    transition: all 0.4s ease-in;
+   }
+
+   .back-button:hover > svg {
+    font-size: 1.2em;
+    transform: translateX(-5px);
+   }
+
+   .back-button:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+   }
+
+
+.head-hr {
+    height: 0px;
+    border-color: white;
+}
+
+
+main {
+    padding: 10px 30%;
+    padding-top: 80px;
+}
+
+
+
+
+
+@media screen and (max-width: 901px) {
+    main {
+        padding: 10px 5%;
+        padding-top: 80px;
+    }
+}

@@ -1,0 +1,79 @@
+
+
+.list_plan_section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: stretch;
+    align-items: stretch;
+}
+.plan_card {
+    border: none;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    width: 210px;
+    padding: 10px;
+    border-radius: 3px;
+    transition: all 0.2s linear;
+    display: flex;
+    flex-direction: column;
+}
+
+.plan_card:hover {
+    scale: 1.02;
+}
+
+.plan_card_head {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.plan_card h1 {
+    color: var(--second-color2);
+    font-weight: bold;
+}
+.plan_card p {
+    display: flex;
+    font-size: 15px;
+    justify-content: space-between;
+    margin: 10px 0px;
+    align-items: center;
+
+}
+
+.plan_card p span {
+    display: flex;
+    align-items: center;
+    /* gap: 5px; */
+}
+
+.plan_card hr {
+    margin: 0px;
+}
+
+
+.plan_card a {
+    border: 1px solid var(--second-color2);
+    border-radius: 3px;
+    padding: 5px 10px;
+    background-color: var(--second-color2);
+    color: white;
+    transition: all 0.2s linear;
+    display: block;
+    text-align: center;
+    font-size: large;
+
+}
+
+.plan_card a:hover {
+    background-color: var(--second-color1);
+    text-decoration: none;
+}
+
+@media screen and (max-width: 901px) {
+
+.plan_card {
+    width: 90%;
+}
+}

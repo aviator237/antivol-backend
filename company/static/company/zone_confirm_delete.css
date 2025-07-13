@@ -1,0 +1,117 @@
+/* Styles pour la confirmation de suppression d'une zone */
+
+/* Bouton de retour */
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--second-color2);
+    text-decoration: none;
+    transition: all 0.2s ease-in;
+    margin-bottom: 10px;
+}
+
+.back-button:hover {
+    color: var(--second-color1);
+    transform: translateX(-5px);
+    text-decoration: none;
+}
+
+.back-button svg {
+    fill: var(--second-color2);
+}
+
+.back-button:hover svg {
+    fill: var(--second-color1);
+}
+
+/* Conteneur de confirmation */
+.delete-confirmation {
+    background-color: white;
+    border-radius: 10px;
+    padding: 40px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.delete-icon {
+    margin-bottom: 20px;
+}
+
+.delete-confirmation h2 {
+    color: #dc3545;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.delete-confirmation p {
+    color: #6c757d;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.warning {
+    color: #dc3545;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* Actions du formulaire */
+.form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 20px;
+}
+
+.cancel-btn, .delete-btn {
+    padding: 12px 30px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+}
+
+.cancel-btn:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+}
+
+/* Responsive */
+@media screen and (max-width: 901px) {
+    .delete-confirmation {
+        padding: 20px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cancel-btn, .delete-btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}

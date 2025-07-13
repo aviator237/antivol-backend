@@ -1,0 +1,213 @@
+/* Styles pour le formulaire de zone de diffusion */
+
+/* Bouton de retour */
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--second-color2);
+    text-decoration: none;
+    transition: all 0.2s ease-in;
+    margin-bottom: 10px;
+}
+
+.back-button:hover {
+    color: var(--second-color1);
+    transform: translateX(-5px);
+    text-decoration: none;
+}
+
+.back-button svg {
+    fill: var(--second-color2);
+}
+
+.back-button:hover svg {
+    fill: var(--second-color1);
+}
+
+/* Titre du formulaire */
+.form_title {
+    color: var(--second-color2);
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+/* Séparateur */
+.head-hr {
+    height: 0px;
+    border-color: white;
+    margin: 20px 0;
+}
+
+/* Conteneur du formulaire */
+.form-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    margin-top: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Groupes de champs */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--second-color1);
+}
+
+.form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    outline: none;
+    border-color: var(--second-color1);
+}
+
+.form-text {
+    font-size: 12px;
+    color: #6c757d;
+    margin-top: 5px;
+}
+
+/* Erreurs de formulaire */
+.form-errors {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.error-message {
+    margin-bottom: 5px;
+}
+
+/* Actions du formulaire */
+.form-actions {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.submit-btn {
+    background-color: var(--second-color2);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.2s ease-in;
+    font-size: 16px;
+}
+
+.submit-btn:hover {
+    background-color: var(--second-color1);
+    transform: translateY(-2px);
+}
+
+/* Conteneur de carte */
+.map-container {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#map {
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#get-location {
+    background-color: var(--second-color3);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s ease-in;
+}
+
+#get-location:hover {
+    background-color: var(--second-color2);
+    transform: translateY(-2px);
+}
+
+/* Conteneur de recherche */
+.search-container {
+    margin-bottom: 20px;
+}
+
+.search-container label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--second-color1);
+}
+
+.autocomplete-container {
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--second-color1);
+}
+
+.autocomplete-results {
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.autocomplete-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.autocomplete-item:hover {
+    background-color: #f5f5f5;
+}
+
+.autocomplete-item:last-child {
+    border-bottom: none;
+}
+
+/* Responsive */
+@media screen and (max-width: 901px) {
+    .form-container {
+        padding: 15px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+}
