@@ -21,56 +21,11 @@ env = environ.Env()
 environ.Env.read_env(env_file=str(BASE_DIR / ".env"))
 
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'formatters': {
-#         'verbose': {
-#             'format': '{levelname} {asctime} {module} {message}',
-#             'style': '{',
-#         },
-#         'simple': {
-#             'format': '{levelname} {message}',
-#             'style': '{',
-#         },
-#     },
-#     'handlers': {
-#         'file': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': os.path.join(BASE_DIR, 'django.log'),
-#             'formatter': 'verbose',
-#         },
-#         'console': {
-#             'level': 'DEBUG',
-#             'class': 'logging.StreamHandler',
-#             'formatter': 'simple',
-#         },
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['file', 'console'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#         'media_app': {
-#             'handlers': ['file', 'console'],
-#             'level': 'INFO',
-#             'propagate': False,
-#         },
-#     },
-# }
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
-STRIPE_PUBLIC_KEY = env("STRIPE_PUBLIC_KEY")
-STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY")
-STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET")
-CLICK_SEND_API_KEY = env("CLICK_SEND_API_KEY")
-CLICK_SEND_USERNAME = env("CLICK_SEND_USERNAME")
 DEBUG = env.bool("DEBUG")
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS')
@@ -97,41 +52,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    # 'channels',
-    'box.apps.BoxConfig',
-    'album.apps.AlbumConfig',
-    'pricing.apps.PricingConfig',
-    'payments.apps.PaymentsConfig',
-    # 'notification.apps.NotificationConfig',
-    'account.apps.AccountConfig',
-    'company.apps.CompanyConfig',
+
     'my_socket.apps.MySocketConfig',
     "media_app.apps.MyAdminConfig",
-    'authentification.apps.AuthentificationConfig',
+    'authentication',  # Notre app d'authentification
+    'devices',  # Notre app de gestion des appareils
     'rest_framework_simplejwt',
-    'location_field.apps.DefaultConfig',
     'django_recaptcha',
     'django_crontab',  # Ajout de django-crontab
     # 'rest_framework_simplejwt.token_blacklist',
 ]
 
-# Configuration des tâches cron
-CRONJOBS = [
-    # Exécuter la commande check_trial_status tous les jours à minuit
-    ('0 0 * * *', 'company.cron.check_trial_status', '>> ' + os.path.join(BASE_DIR, 'logs/cron_trial_status.log')),
 
-    # Envoyer des notifications 7 jours avant l'expiration de la période d'essai (à 10h du matin)
-    ('0 10 * * *', 'company.cron.send_trial_expiration_reminders', '>> ' + os.path.join(BASE_DIR, 'logs/cron_reminders.log')),
-]
 
-# S'assurer que le répertoire des logs existe
-os.makedirs(os.path.join(BASE_DIR, 'logs'), exist_ok=True)
-
-LOCATION_FIELD = {
-    'map.provider': 'google',
-    'search.provider': 'google',
-    'provider.openstreetmap.max_zoom': 18,
-}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -217,10 +150,7 @@ ASGI_APPLICATION = "media_app.asgi.application"
 
 CHANNEL_LAYERS = {
     "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-        },
+        "BACKEND": "channels.layers.InMemoryChannelLayer",
     },
 }
 # Database
@@ -233,22 +163,23 @@ DB_PASSWORD = env("DB_PASSWORD")
 DB_HOST = env("DB_HOST")
 DB_PORT = env("DB_PORT")
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': "django.db.backends.sqlite3",
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': DB_NAME,
-        'USER': DB_USER,
-        'PASSWORD': DB_PASSWORD,
-        'HOST': DB_HOST,
-        'PORT': DB_PORT,
+        'ENGINE': "django.db.backends.sqlite3",
+        'NAME': BASE_DIR / "db.sqlite3",
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': DB_NAME,
+#         'USER': DB_USER,
+#         'PASSWORD': DB_PASSWORD,
+#         'HOST': DB_HOST,
+#         'PORT': DB_PORT,
+#     }
+# }
 
 
 # Password validation
@@ -303,66 +234,7 @@ LOGIN_URL = "/auth/login"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-if not DEBUG:
-    LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '{levelname} {asctime} {module} {message}',
-            'style': '{',
-        },
-        'simple': {
-            'format': '{levelname} {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'django.log'),
-            'formatter': 'verbose',
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file', 'console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'media_app': {
-            'handlers': ['file', 'console'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-    },
-}
-
-
-#     LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'file': {
-#             'level': 'DEBUG',
-#             'class': 'logging.FileHandler',
-#             'filename': os.path.join(BASE_DIR, 'django.log'),
-#         },
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['file'],
-#             'level': 'DEBUG',
-#             'propagate': True,
-#         },
-#     },
-# }
+# Configuration pour l'authentification
+FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:3000")
 
 

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vérification d'email - Antivol</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #2196F3;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 0 0 8px 8px;
+        }
+        .button {
+            display: inline-block;
+            background-color: #2196F3;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔒 Antivol</h1>
+        <p>Vérification de votre adresse email</p>
+    </div>
+    
+    <div class="content">
+        <h2>Bonjour {{ user.first_name }},</h2>
+        
+        <p>Merci de vous être inscrit sur <strong>Antivol</strong>, votre application de sécurité mobile.</p>
+        
+        <p>Pour activer votre compte et commencer à utiliser l'application, vous avez <strong>deux options</strong> :</p>
+
+        <h3 style="color: #2196F3; margin-top: 30px;">Option 1 : Cliquer sur le lien</h3>
+        <div style="text-align: center;">
+            <a href="{{ verification_url }}" class="button">Vérifier mon email</a>
+        </div>
+
+        <h3 style="color: #2196F3; margin-top: 30px;">Option 2 : Saisir le code dans l'application</h3>
+        <div style="text-align: center; margin: 20px 0;">
+            <div style="background-color: #f0f8ff; border: 2px solid #2196F3; border-radius: 8px; padding: 20px; display: inline-block;">
+                <p style="margin: 0; font-size: 14px; color: #666;">Votre code de vérification :</p>
+                <p style="margin: 10px 0 0 0; font-size: 32px; font-weight: bold; color: #2196F3; letter-spacing: 4px;">
+                    {{ verification_code }}
+                </p>
+            </div>
+        </div>
+
+        <p style="font-size: 14px; color: #666; text-align: center;">
+            <em>Copiez ce code et collez-le dans l'application mobile</em>
+        </p>
+        
+        <p><strong>Important :</strong> Ce lien de vérification est valide et sécurisé. Si vous n'avez pas créé de compte sur Antivol, vous pouvez ignorer cet email.</p>
+        
+        <p>Une fois votre email vérifié, vous pourrez :</p>
+        <ul>
+            <li>✅ Configurer la protection de votre appareil</li>
+            <li>✅ Recevoir des alertes en temps réel</li>
+            <li>✅ Accéder à l'historique des activités</li>
+            <li>✅ Personnaliser vos paramètres de sécurité</li>
+        </ul>
+    </div>
+    
+    <div class="footer">
+        <p>Cet email a été envoyé par <strong>Antivol</strong></p>
+        <p>Si vous avez des questions, n'hésitez pas à nous contacter.</p>
+    </div>
+</body>
+</html>

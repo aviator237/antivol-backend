@@ -26,29 +26,17 @@ from rest_framework import routers
 from django.conf.urls.static import static
 from django.conf import settings
 
-from box.views import BoxApiView, BoxViewSet
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
 
-# Ici nous créons notre routeur
-router = routers.SimpleRouter()
-router.register('box', BoxViewSet, basename='box')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('api-box/', include('box.urls')),
-    path("auth/", include("authentification.urls")),
-    path("account/", include("account.urls")),
-    path("album/", include("album.urls")),
-    path("pricing/", include("pricing.urls")),
-    path("payments/", include("payments.urls")),
-    path("company/", include("company.urls")),
+    path('api/auth/', include('authentication.urls')),  # URLs d'authentification
+    path('api/devices/', include('devices.urls')),  # URLs de gestion des appareils
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    # path('api/box/', BoxApiView.as_view()),
-    path('', include(router.urls))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-# Je veux qu'en soumettant le formulaire, la liste des numeros de telephone soit aussi envoyée dans la requete sous le champs phone_numbers et accessible par phone_numbers = request.POST.getlist('phone_numbers').
