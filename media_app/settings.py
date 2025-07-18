@@ -64,7 +64,8 @@ INSTALLED_APPS = [
 ]
 
 
-
+if DEBUG:
+    INSTALLED_APPS.insert(0, 'daphne')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -151,8 +152,24 @@ ASGI_APPLICATION = "media_app.asgi.application"
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels.layers.InMemoryChannelLayer",
+        "CONFIG": {
+            "capacity": 1500,  # Augmenter la capacité
+            "expiry": 10,      # Messages expirent après 10 secondes
+        },
     },
 }
+
+# Pour la production, utilisez Redis:
+# CHANNEL_LAYERS = {
+#     "default": {
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG": {
+#             "hosts": [("127.0.0.1", 6379)],
+#             "capacity": 1500,
+#             "expiry": 10,
+#         },
+#     },
+# }
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
