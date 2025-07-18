@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-import uuid
 
 class Phone(models.Model):
     """Modèle représentant un appareil mobile de l'utilisateur"""
@@ -24,7 +23,7 @@ class Phone(models.Model):
 
     # Informations de base
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='phones')
-    device_id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    device_id = models.CharField(max_length=255, unique=True, help_text="Identifiant unique de l'appareil")
     name = models.CharField(max_length=100, help_text="Nom donné à l'appareil par l'utilisateur")
 
     # Informations techniques

@@ -43,7 +43,7 @@ class PhoneRegistrationSerializer(serializers.ModelSerializer):
             'unlock_attempts_threshold', 'photo_capture_enabled',
             'location_tracking_enabled', 'created_at'
         ]
-        read_only_fields = ['id', 'device_id', 'created_at']
+        read_only_fields = ['id', 'created_at']
     
     def create(self, validated_data):
         """Crée un nouveau téléphone pour l'utilisateur connecté"""
@@ -72,7 +72,7 @@ class UnlockAttemptSerializer(serializers.ModelSerializer):
 
 class UnlockAttemptCreateSerializer(serializers.ModelSerializer):
     """Serializer pour créer une tentative de déverrouillage"""
-    phone_device_id = serializers.UUIDField(write_only=True)
+    phone_device_id = serializers.CharField(write_only=True, max_length=255)
     is_suspicious = serializers.ReadOnlyField()
 
     class Meta:
