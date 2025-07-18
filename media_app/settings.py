@@ -235,7 +235,7 @@ LOGIN_URL = "/auth/login"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Configuration pour l'authentification
-FRONTEND_URL = env("FRONTEND_URL", default="http://localhost:3000")
+FRONTEND_URL = env("FRONTEND_URL", default="")
 
 
 # Désactivez temporairement ces paramètres pour le débogage
