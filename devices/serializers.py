@@ -87,6 +87,9 @@ class UnlockAttemptCreateSerializer(serializers.ModelSerializer):
     def validate_phone_device_id(self, value):
         """Valide que le device_id appartient à l'utilisateur connecté"""
         user = self.context['request'].user
+        print(user)
+        print(value)
+
         try:
             phone = Phone.objects.get(device_id=value, user=user)
             return value
