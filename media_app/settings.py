@@ -261,3 +261,10 @@ FRONTEND_URL = env("FRONTEND_URL", default="")
 # SECURE_HSTS_INCLUDE_SUBDOMAINS = False
 # SECURE_HSTS_PRELOAD = False
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+
+# Ajouter cette ligne temporairement
+if not DEBUG:
+    STATICFILES_DIRS = []
