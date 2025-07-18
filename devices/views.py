@@ -11,6 +11,7 @@ from .serializers import (
     IntrusionPhotoUploadSerializer, PhoneStatsSerializer,
     UserDevicesSummarySerializer
 )
+import json
 
 class PhoneListCreateView(generics.ListCreateAPIView):
     """Vue pour lister et créer des téléphones"""
@@ -196,3 +197,95 @@ def phone_heartbeat_view(request):
         return Response({
             'error': 'Téléphone non trouvé'
         }, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def device_detection_view(request):
+    """
+    Endpoint pour la détection automatique de device lors de la connexion.
+    Reçoit les informations du device actuel et retourne :
+    - La liste des devices existants
+    - Un device correspondant s'il est trouvé automatiquement
+    - Les informations nécessaires pour la sélection manuelle
+    """
+    try:
+        # Récupérer les informations du device actuel depuis la requête
+        device_info = request.data
+
+        # Récupérer tous les devices de l'utilisateur
+        user_devices = Phone.objects.filter(user=request.user)
+        devices_data = PhoneSerializer(user_devices, many=True).data
+
+        # Essayer de trouver un device correspondant automatiquement
+        matching_device = None
+
+        # 1. Recherche par IMEI (le plus fiable)
+        if device_info.get('imei') and device_info['imei'].strip():
+            matching_device = user_devices.filter(
+                imei=device_info['imei'].strip()
+            ).first()
+            if matching_device:
+                return Response({
+                    'action': 'found_existing',
+                    'device': PhoneSerializer(matching_device).data,
+                    'devices': devices_data,
+                    'match_method': 'imei',
+                    'message': 'Device trouvé par IMEI'
+                })
+
+        # 2. Recherche par numéro de série
+        if device_info.get('serial_number') and device_info['serial_number'].strip():
+            matching_device = user_devices.filter(
+                serial_number=device_info['serial_number'].strip()
+            ).first()
+            if matching_device:
+                return Response({
+                    'action': 'found_existing',
+                    'device': PhoneSerializer(matching_device).data,
+                    'devices': devices_data,
+                    'match_method': 'serial_number',
+                    'message': 'Device trouvé par numéro de série'
+                })
+
+        # 3. Recherche par combinaison brand + model + os_version (moins fiable)
+        if (device_info.get('brand') and device_info.get('model') and
+            device_info.get('os_version')):
+            matching_devices = user_devices.filter(
+                brand__iexact=device_info['brand'],
+                model__iexact=device_info['model'],
+                os_version=device_info['os_version']
+            )
+
+            # Si un seul device correspond, on peut l'utiliser
+            if matching_devices.count() == 1:
+                matching_device = matching_devices.first()
+                return Response({
+                    'action': 'found_existing',
+                    'device': PhoneSerializer(matching_device).data,
+                    'devices': devices_data,
+                    'match_method': 'brand_model_os',
+                    'message': 'Device trouvé par caractéristiques techniques'
+                })
+
+        # Aucun device correspondant trouvé automatiquement
+        if not user_devices.exists():
+            # Aucun device enregistré, créer automatiquement
+            return Response({
+                'action': 'create_new',
+                'devices': [],
+                'current_device_info': device_info,
+                'message': 'Aucun device enregistré, création automatique recommandée'
+            })
+        else:
+            # Plusieurs devices, sélection manuelle requise
+            return Response({
+                'action': 'need_selection',
+                'devices': devices_data,
+                'current_device_info': device_info,
+                'message': 'Sélection manuelle requise'
+            })
+
+    except Exception as e:
+        return Response({
+            'error': f'Erreur lors de la détection du device: {str(e)}'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
