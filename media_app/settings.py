@@ -239,8 +239,8 @@ FRONTEND_URL = env("FRONTEND_URL", default="")
 
 
 # Désactivez temporairement ces paramètres pour le débogage
-SECURE_SSL_REDIRECT = False  # Au lieu de True
-SECURE_HSTS_SECONDS = 0      # Au lieu d'une valeur élevée
-SECURE_HSTS_INCLUDE_SUBDOMAINS = False
-SECURE_HSTS_PRELOAD = False
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT = False  # Au lieu de True
+# SECURE_HSTS_SECONDS = 0      # Au lieu d'une valeur élevée
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+# SECURE_HSTS_PRELOAD = False
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
