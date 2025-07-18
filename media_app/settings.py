@@ -69,6 +69,7 @@ if DEBUG:
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise middleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -262,8 +263,20 @@ FRONTEND_URL = env("FRONTEND_URL", default="")
 # SECURE_HSTS_PRELOAD = False
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+
+# Configuration WhiteNoise
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_AUTOREFRESH = DEBUG
+
+# Configuration pour servir les fichiers media avec WhiteNoise
+WHITENOISE_ROOT = MEDIA_ROOT
+WHITENOISE_INDEX_FILE = True
+
+# Compression et cache pour les fichiers statiques
+WHITENOISE_MAX_AGE = 31536000  # 1 an de cache
+WHITENOISE_SKIP_COMPRESS_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'zip', 'gz', 'tgz', 'bz2', 'tbz', 'xz', 'br']
 
 # Ajouter cette ligne temporairement
 if not DEBUG:

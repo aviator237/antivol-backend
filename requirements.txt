@@ -21,6 +21,9 @@ redis==5.2.1
 # Configuration et environnement
 django-environ==0.12.0
 
+# Serveur de fichiers statiques
+whitenoise==6.9.0
+
 # Sécurité et authentification
 django-recaptcha==4.1.0
 cryptography==44.0.0
